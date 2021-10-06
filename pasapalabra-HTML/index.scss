@@ -1,0 +1,110 @@
+
+@mixin on-circle($item-count, $circle-size, $item-size) {    
+    position: relative;
+    width:  $circle-size;
+    height: $circle-size;
+    padding: 0;
+    border-radius: 50%; 
+    list-style: none;       
+    
+    > * {
+      display: block;
+      position: absolute;
+      top:  50%; 
+      left: 50%;
+      width:  $item-size;
+      height: $item-size;
+      margin: -($item-size / 2);
+    
+      $angle: (360 / $item-count);
+      $rot: 0;
+  
+      @for $i from 1 through $item-count {
+        &:nth-of-type(#{$i}) {
+          transform: 
+            rotate($rot * 1deg) 
+            translate($circle-size / 2) 
+            rotate($rot * -1deg);
+        }
+        $rot: $rot + $angle;
+      }
+    }
+}
+
+body {
+    background: linear-gradient(to bottom, blue, lightblue);
+    margin: 50px 10px;
+}
+
+.game {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+.player {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .submission {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    #rosco1, #rosco2 {
+        position: relative;
+
+        #name1, #name2 {
+            width: 125px;
+            font-size: 20px;
+            font-family: monospace;
+            position: absolute;
+            z-index: 1;
+            top: 43%;
+            left: 33%;
+        }
+
+        .points {
+            width: 50px;
+            font-size: 20px;
+            font-family: monospace;
+            position: absolute;
+            z-index: 1;
+            top: 53%;
+            left: 43%;
+            border-radius: 25%;
+        }
+
+        .container {
+            @include on-circle($item-count: 27, $circle-size: 20em, $item-size: 3em); 
+            margin: 2em auto 2em;
+        
+            button {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                transition: all 1s;
+            }
+           
+            button:hover {
+                transform: scale(2.1);
+            }
+        }        
+    }   
+
+    textarea {
+        width: 350px;
+        font-weight: bold;
+        font-size: 15px;
+        font-family: monospace;
+    }
+
+
+}
+
+
+

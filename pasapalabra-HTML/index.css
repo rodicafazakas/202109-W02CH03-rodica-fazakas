@@ -1,0 +1,161 @@
+body {
+  background: linear-gradient(to bottom, blue, lightblue);
+  margin: 50px 10px;
+}
+
+.game {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+}
+
+.player {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.player .submission {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.player #rosco1, .player #rosco2 {
+  position: relative;
+}
+.player #rosco1 #name1, .player #rosco1 #name2, .player #rosco2 #name1, .player #rosco2 #name2 {
+  width: 125px;
+  font-size: 20px;
+  font-family: monospace;
+  position: absolute;
+  z-index: 1;
+  top: 43%;
+  left: 33%;
+}
+.player #rosco1 .points, .player #rosco2 .points {
+  width: 50px;
+  font-size: 20px;
+  font-family: monospace;
+  position: absolute;
+  z-index: 1;
+  top: 53%;
+  left: 43%;
+  border-radius: 25%;
+}
+.player #rosco1 .container, .player #rosco2 .container {
+  position: relative;
+  width: 20em;
+  height: 20em;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+  margin: 2em auto 2em;
+}
+.player #rosco1 .container > *, .player #rosco2 .container > * {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  margin: -1.5em;
+}
+.player #rosco1 .container > *:nth-of-type(1), .player #rosco2 .container > *:nth-of-type(1) {
+  transform: rotate(0deg) translate(10em) rotate(0deg);
+}
+.player #rosco1 .container > *:nth-of-type(2), .player #rosco2 .container > *:nth-of-type(2) {
+  transform: rotate(13.3333333333deg) translate(10em) rotate(-13.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(3), .player #rosco2 .container > *:nth-of-type(3) {
+  transform: rotate(26.6666666667deg) translate(10em) rotate(-26.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(4), .player #rosco2 .container > *:nth-of-type(4) {
+  transform: rotate(40deg) translate(10em) rotate(-40deg);
+}
+.player #rosco1 .container > *:nth-of-type(5), .player #rosco2 .container > *:nth-of-type(5) {
+  transform: rotate(53.3333333333deg) translate(10em) rotate(-53.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(6), .player #rosco2 .container > *:nth-of-type(6) {
+  transform: rotate(66.6666666667deg) translate(10em) rotate(-66.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(7), .player #rosco2 .container > *:nth-of-type(7) {
+  transform: rotate(80deg) translate(10em) rotate(-80deg);
+}
+.player #rosco1 .container > *:nth-of-type(8), .player #rosco2 .container > *:nth-of-type(8) {
+  transform: rotate(93.3333333333deg) translate(10em) rotate(-93.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(9), .player #rosco2 .container > *:nth-of-type(9) {
+  transform: rotate(106.6666666667deg) translate(10em) rotate(-106.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(10), .player #rosco2 .container > *:nth-of-type(10) {
+  transform: rotate(120deg) translate(10em) rotate(-120deg);
+}
+.player #rosco1 .container > *:nth-of-type(11), .player #rosco2 .container > *:nth-of-type(11) {
+  transform: rotate(133.3333333333deg) translate(10em) rotate(-133.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(12), .player #rosco2 .container > *:nth-of-type(12) {
+  transform: rotate(146.6666666667deg) translate(10em) rotate(-146.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(13), .player #rosco2 .container > *:nth-of-type(13) {
+  transform: rotate(160deg) translate(10em) rotate(-160deg);
+}
+.player #rosco1 .container > *:nth-of-type(14), .player #rosco2 .container > *:nth-of-type(14) {
+  transform: rotate(173.3333333333deg) translate(10em) rotate(-173.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(15), .player #rosco2 .container > *:nth-of-type(15) {
+  transform: rotate(186.6666666667deg) translate(10em) rotate(-186.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(16), .player #rosco2 .container > *:nth-of-type(16) {
+  transform: rotate(200deg) translate(10em) rotate(-200deg);
+}
+.player #rosco1 .container > *:nth-of-type(17), .player #rosco2 .container > *:nth-of-type(17) {
+  transform: rotate(213.3333333333deg) translate(10em) rotate(-213.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(18), .player #rosco2 .container > *:nth-of-type(18) {
+  transform: rotate(226.6666666667deg) translate(10em) rotate(-226.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(19), .player #rosco2 .container > *:nth-of-type(19) {
+  transform: rotate(240deg) translate(10em) rotate(-240deg);
+}
+.player #rosco1 .container > *:nth-of-type(20), .player #rosco2 .container > *:nth-of-type(20) {
+  transform: rotate(253.3333333333deg) translate(10em) rotate(-253.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(21), .player #rosco2 .container > *:nth-of-type(21) {
+  transform: rotate(266.6666666667deg) translate(10em) rotate(-266.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(22), .player #rosco2 .container > *:nth-of-type(22) {
+  transform: rotate(280deg) translate(10em) rotate(-280deg);
+}
+.player #rosco1 .container > *:nth-of-type(23), .player #rosco2 .container > *:nth-of-type(23) {
+  transform: rotate(293.3333333333deg) translate(10em) rotate(-293.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(24), .player #rosco2 .container > *:nth-of-type(24) {
+  transform: rotate(306.6666666667deg) translate(10em) rotate(-306.6666666667deg);
+}
+.player #rosco1 .container > *:nth-of-type(25), .player #rosco2 .container > *:nth-of-type(25) {
+  transform: rotate(320deg) translate(10em) rotate(-320deg);
+}
+.player #rosco1 .container > *:nth-of-type(26), .player #rosco2 .container > *:nth-of-type(26) {
+  transform: rotate(333.3333333333deg) translate(10em) rotate(-333.3333333333deg);
+}
+.player #rosco1 .container > *:nth-of-type(27), .player #rosco2 .container > *:nth-of-type(27) {
+  transform: rotate(346.6666666667deg) translate(10em) rotate(-346.6666666667deg);
+}
+.player #rosco1 .container button, .player #rosco2 .container button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 1s;
+}
+.player #rosco1 .container button:hover, .player #rosco2 .container button:hover {
+  transform: scale(2.1);
+}
+.player textarea {
+  width: 350px;
+  font-weight: bold;
+  font-size: 15px;
+  font-family: monospace;
+}
+
+/*# sourceMappingURL=index.css.map */

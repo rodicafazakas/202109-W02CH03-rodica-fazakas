@@ -33,101 +33,56 @@ const questions = [
 // function that creates the user object
 function createPlayerStatus (name, points, nextLetter, incorrectAnswers, questionsLeft, timeLeft, playerNumber) { 
     return {
-        playerNumber: playerNumber,
-        name: name,
-        points: points,
+        playerNumber,
+        name,
+        points,
         letterToRespond: nextLetter,
-        incorrectAnswers: incorrectAnswers,
+        incorrectAnswers,
         questionsLeft: Object.create(questionsLeft),
-        timeLeft: timeLeft,
+        timeLeft,
         gameEnded: false
     }   
 };
 
 
-// define the players
-let name1 = document.getElementById("name1");
-let playerStatus1 = createPlayerStatus("Jugador 1", 0, 'a', 0, questions, 150, 1);
-name1.addEventListener("keypress", function(event) {
-    if (event.keyCode === 13) {
-      document.getElementById("name1").style.backgroundColor = "lightblue";
-      playerStatus1.name = document.getElementById("name1").value;    
-    }
-  });
-
-
-let name2 = document.getElementById("name2");
-let playerStatus2 = createPlayerStatus("Jugador 2", 0, 'a', 0, questions, 150, 2);
-name2.addEventListener("keypress", function(event) {
-    if (event.keyCode === 13) {
-    document.getElementById("name2").style.backgroundColor = "lightblue";   
-    playerStatus2.name = document.getElementById("name2").value;     
-    }
-});
-
-//play game
-document.getElementById("name1").style.color = 'red';
-showQuestion(playerStatus1);
-
-let submission1 = document.getElementById("submit1");
-submission1.addEventListener("click", function() {
-    let continuePlayer1 = checkAnswer(playerStatus1);
-    if (playerStatus1.gameEnded === true ) { 
-        alert(`${playerStatus1.name}, has ganado! Has acertado ${playerStatus1.points} preguntas.`);
-    } else {
-        if (continuePlayer1) {
-            showQuestion(playerStatus1);
-        } else {
-            document.getElementById("name2").style.color = 'red';
-            document.getElementById("name1").style.color = 'black';
-            showQuestion(playerStatus2);
-        }
-    }    
-});
-
-let submission2 = document.getElementById("submit2");
-submission2.addEventListener("click", function() {
-    let continuePlayer2 = checkAnswer(playerStatus2);
-    if (playerStatus2.gameEnded === true ) { 
-        alert(`${playerStatus2.name}, has ganado! Has acertado ${playerStatus2.points} preguntas.`);
-    } else {
-        if (continuePlayer2) {
-            showQuestion(playerStatus2);
-        } else {
-            document.getElementById("name1").style.color = 'red';
-            document.getElementById("name2").style.color = 'black';
-            showQuestion(playerStatus1);
-        }
-    }    
-});
-
-
-
 function showQuestion(playerStatus) {
     // go to the player's position in the alphabet game
-    let indexOfLetterToRespond = playerStatus.questionsLeft.findIndex(item => item.letter === playerStatus.letterToRespond);
-    document.getElementById("definicion"+playerStatus.playerNumber).value = playerStatus.questionsLeft[indexOfLetterToRespond].question;        
-    document.getElementById("respuesta"+playerStatus.playerNumber).value = playerStatus.questionsLeft[indexOfLetterToRespond].answer;        
+    const indexOfLetterToRespond = playerStatus.questionsLeft.findIndex(item => item.letter === playerStatus.letterToRespond);
+    document.getElementById(`definicion${playerStatus.playerNumber}`).value = playerStatus.questionsLeft[indexOfLetterToRespond].question;        
+    document.getElementById(`respuesta${playerStatus.playerNumber}`).value = playerStatus.questionsLeft[indexOfLetterToRespond].answer;        
 }
 
 function checkAnswer(playerStatus) {
     // go to the player's position in the alphabet game
     let indexOfLetterToRespond = playerStatus.questionsLeft.findIndex(item => item.letter === playerStatus.letterToRespond);
-    let correctAnswer = playerStatus.questionsLeft[indexOfLetterToRespond].answer;
+    const correctAnswer = playerStatus.questionsLeft[indexOfLetterToRespond].answer;
 
-    let indexToMarkLetter = questions.findIndex(item => item.letter === playerStatus.letterToRespond);
+    const indexToMarkLetter = questions.findIndex(item => item.letter === playerStatus.letterToRespond);
     
-    let userAnswer = document.getElementById("respuesta"+playerStatus.playerNumber).value.toLowerCase();         
+    const userAnswer = document.getElementById(`respuesta${playerStatus.playerNumber}`).value.toLowerCase(); 
+    
+    function goToNextNotAnsweredLetter() {
+        if (playerStatus.questionsLeft.length === 0) {
+            // end game when answering correctly all questions
+            playerStatus.gameEnded = true;    
+            
+        } else if (indexOfLetterToRespond === playerStatus.questionsLeft.length-1) {
+            // start the questions list again as long as there are unanswered questions
+            playerStatus.letterToRespond = playerStatus.questionsLeft[0].letter;        
+        } else {
+            playerStatus.letterToRespond = playerStatus.questionsLeft[indexOfLetterToRespond+1].letter;
+        }
+    }
 
     if (userAnswer === correctAnswer) {
         playerStatus.questionsLeft[indexOfLetterToRespond].answered = true;
         playerStatus.points += 1;
-        document.getElementById("player"+playerStatus.playerNumber).querySelectorAll("button")[indexToMarkLetter].style.background = 'green';
-        document.getElementById("puntuacion"+playerStatus.playerNumber).innerHTML = playerStatus.points; 
+        document.getElementById(`player${playerStatus.playerNumber}`).querySelectorAll("button")[indexToMarkLetter].style.background = 'green';
+        document.getElementById(`puntuacion${playerStatus.playerNumber}`).innerHTML = playerStatus.points; 
 
         // update array of questions left to answer
         playerStatus.questionsLeft.splice(indexOfLetterToRespond, 1);
-        indexOfLetterToRespond = indexOfLetterToRespond - 1;
+        indexOfLetterToRespond -= 1;
         goToNextNotAnsweredLetter();
 
     } else if (userAnswer === 'pasapalabra') {
@@ -136,7 +91,7 @@ function checkAnswer(playerStatus) {
 
     } else if (userAnswer !== correctAnswer) {
         playerStatus.incorrectAnswers += 1;
-        document.getElementById("player"+playerStatus.playerNumber).querySelectorAll("button")[indexToMarkLetter].style.background = 'red';
+        document.getElementById(`player${playerStatus.playerNumber}`).querySelectorAll("button")[indexToMarkLetter].style.background = 'red';
         goToNextNotAnsweredLetter();
         return false;
 
@@ -146,18 +101,65 @@ function checkAnswer(playerStatus) {
 
     return true;
 
-    function goToNextNotAnsweredLetter() {
-        if (playerStatus.questionsLeft.length === 0) {
-            // end game when answering correctly all questions
-            playerStatus.gameEnded = true;    
-            return;
-        } else if (indexOfLetterToRespond === playerStatus.questionsLeft.length-1) {
-            // start the questions list again as long as there are unanswered questions
-            playerStatus.letterToRespond = playerStatus.questionsLeft[0].letter;        
-        } else {
-            playerStatus.letterToRespond = playerStatus.questionsLeft[indexOfLetterToRespond+1].letter;
-        }
-    }
+
 
 }
+
+// define the players
+const name1 = document.getElementById("name1");
+const playerStatus1 = createPlayerStatus("Jugador 1", 0, 'a', 0, questions, 150, 1);
+name1.addEventListener("keypress", (event) => {
+    if (event.keyCode === 13) {
+      document.getElementById("name1").style.backgroundColor = "lightblue";
+      playerStatus1.name = document.getElementById("name1").value;    
+    }
+  });
+
+
+const name2 = document.getElementById("name2");
+const playerStatus2 = createPlayerStatus("Jugador 2", 0, 'a', 0, questions, 150, 2);
+name2.addEventListener("keypress", (event) => {
+    if (event.keyCode === 13) {
+    document.getElementById("name2").style.backgroundColor = "lightblue";   
+    playerStatus2.name = document.getElementById("name2").value;     
+    }
+});
+
+// play game
+document.getElementById("name1").style.color = 'red';
+showQuestion(playerStatus1);
+
+const submission1 = document.getElementById("submit1");
+submission1.addEventListener("click", () => {
+    const continuePlayer1 = checkAnswer(playerStatus1);
+    if (playerStatus1.gameEnded === true ) { 
+        // eslint-disable-next-line no-alert
+        alert(`${playerStatus1.name}, has ganado! Has acertado ${playerStatus1.points} preguntas.`);
+    } else if (continuePlayer1) {
+            showQuestion(playerStatus1);
+        } else {
+            document.getElementById("name2").style.color = 'red';
+            document.getElementById("name1").style.color = 'black';
+            showQuestion(playerStatus2);
+        }    
+});
+
+const submission2 = document.getElementById("submit2");
+submission2.addEventListener("click", () => {
+    const continuePlayer2 = checkAnswer(playerStatus2);
+    if (playerStatus2.gameEnded === true ) { 
+        // eslint-disable-next-line no-alert
+        alert(`${playerStatus2.name}, has ganado! Has acertado ${playerStatus2.points} preguntas.`);
+    } else if (continuePlayer2) {
+            showQuestion(playerStatus2);
+        } else {
+            document.getElementById("name1").style.color = 'red';
+            document.getElementById("name2").style.color = 'black';
+            showQuestion(playerStatus1);
+        }    
+});
+
+
+
+
 

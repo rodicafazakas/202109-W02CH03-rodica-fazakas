@@ -1,16 +1,16 @@
 
-calculatorPro();
+
 
 function calculatorPro() {
     let newNumber;
   
-    let numberList = [];
-    let results = [];
-    let stop;
+    const numberList = [];
+    const results = [];
 
     // let the user enter as many numbers as he/she wants
     do {
-      input = prompt('Enter a number or press cancel to stop ');
+      // eslint-disable-next-line no-alert
+      const input = prompt('Enter a number or press cancel to stop ');
 
       if (input === null) {
         break;
@@ -18,43 +18,45 @@ function calculatorPro() {
 
       newNumber = +parseFloat(input);
   
-      if (!isNaN(newNumber)) {
+      if (!Number.isNaN(newNumber)) {
         numberList.push(newNumber);
-        console.log('You entered: ' + newNumber + '.');
+        console.log(`You entered: ${  newNumber  }.`);
       } else {
         console.log('You need to enter a number! Try again.'); 
       }
+    // eslint-disable-next-line no-constant-condition
     } while (true)
 
     // perform operations
-    if (numberList.length == 1) {
-        resultSqrt = Math.sqrt(numberList[0]);
+    if (numberList.length === 1) {
+        let resultSqrt = Math.sqrt(numberList[0]);
         resultSqrt = +resultSqrt.toFixed(3);
         results.push(resultSqrt);
-        console.log('The square root of ' + numberList[0] + ' is: ' + resultSqrt); 
+        console.log(`The square root of ${  numberList[0]  } is: ${  resultSqrt}`); 
     } else if (numberList.length > 1) {
-        resultSum = numberList.reduce((accumulator, currentValue) => accumulator + currentValue);
-        resultDif = numberList.reduce((accumulator, currentValue) => accumulator - currentValue);
-        resultMult = numberList.reduce((accumulator, currentValue) => accumulator * currentValue);
-        resultDiv = numberList.reduce((accumulator, currentValue) => accumulator / currentValue);
+        const resultSum = numberList.reduce((accumulator, currentValue) => accumulator + currentValue);
+        const resultDif = numberList.reduce((accumulator, currentValue) => accumulator - currentValue);
+        const resultMult = numberList.reduce((accumulator, currentValue) => accumulator * currentValue);
+        let resultDiv = numberList.reduce((accumulator, currentValue) => accumulator / currentValue);
         resultDiv = +resultDiv.toFixed(3);
 
         results.push(resultSum, resultDif, resultMult, resultDiv);
 
         console.log('Results:');
-        console.log('The result of the sum is: ' + resultSum + '.');
-        console.log('The result of the difference is: ' + resultDif + '.');
-        console.log('The result of the multiplication is: ' + resultMult + '.');
-        console.log('The result of the division is: ' + resultDiv + '.');
+        console.log(`The result of the sum is: ${  resultSum  }.`);
+        console.log(`The result of the difference is: ${  resultDif  }.`);
+        console.log(`The result of the multiplication is: ${  resultMult  }.`);
+        console.log(`The result of the division is: ${  resultDiv  }.`);
     }
 
-    answer = prompt("New numbers? y/n");
+    // eslint-disable-next-line no-alert
+    const answer = prompt("New numbers? y/n");
 
-    if (answer == "y") {
+    if (answer === "y") {
         calculatorPro();
     } else {
         console.log('Bye!');
     }
 }
 
-
+calculatorPro();

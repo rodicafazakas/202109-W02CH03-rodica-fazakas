@@ -3,7 +3,7 @@ const questions = [
     { letter: "a", answer: "abducir", answered: false, question: "CON LA A. Dicho de una supuesta criatura extraterrestre: Apoderarse de alguien"},
     { letter: "b", answer: "bingo", answered: false, question: "CON LA B. Juego que ha sacado de quicio a todos los 'Skylabers' en las sesiones de precurso"},
     { letter: "c", answer: "churumbel", answered: false, question: "CON LA C. Niño, crío, bebé"},
-    /*{ letter: "d", answer: "diarrea", status: 0, question: "CON LA D. Anormalidad en la función del aparato digestivo caracterizada por frecuentes evacuaciones y su consistencia líquida"},
+    /* { letter: "d", answer: "diarrea", status: 0, question: "CON LA D. Anormalidad en la función del aparato digestivo caracterizada por frecuentes evacuaciones y su consistencia líquida"},
     { letter: "e", answer: "ectoplasma", status: 0, question: "CON LA E. Gelatinoso y se encuentra debajo de la membrana plasmática. Los cazafantasmas medían su radiación"},
     { letter: "f", answer: "facil", status: 0, question: "CON LA F. Que no requiere gran esfuerzo, capacidad o dificultad"},
     { letter: "g", answer: "galaxia", status: 0, question: "CON LA G. Conjunto enorme de estrellas, polvo interestelar, gases y partículas"},
@@ -31,31 +31,90 @@ const questions = [
 ]
 
 // array of user objects
-let gameResults = []; 
+const gameResults = []; 
 
 // function that creates the user object
 function createPlayerStatus (name, points, nextLetter, incorrectAnswers, questionsLeft, timeLeft) { 
     return {
-        name: name,
-        points: points,
+        name,
+        points,
         letterToRespond: nextLetter,
-        incorrectAnswers: incorrectAnswers,
+        incorrectAnswers,
         questionsLeft: Object.create(questionsLeft),
-        timeLeft: timeLeft,
+        timeLeft,
         gameEnded: false
     }   
 };
 
 
 // define the players
-name1 = prompt('Bienvenid@. Cual es tu nombre? ');
-let playerStatus1 = createPlayerStatus(name1, 0, 'a', 0, questions, 150);
+// eslint-disable-next-line no-alert
+const name1 = prompt('Bienvenid@. Cual es tu nombre? ');
+const playerStatus1 = createPlayerStatus(name1, 0, 'a', 0, questions, 150);
 
-name2 = prompt('Bienvenid@. Cual es tu nombre? ');
-let playerStatus2 = createPlayerStatus(name2, 0, 'a', 0, questions, 150);
+// eslint-disable-next-line no-alert
+const name2 = prompt('Bienvenid@. Cual es tu nombre? ');
+const playerStatus2 = createPlayerStatus(name2, 0, 'a', 0, questions, 150);
+
+// define each player's turn, which runs until there are no more questions to answer or there is not time left 
+function playTurn(playerStatus) {
+
+    function goToNextNotAnsweredLetter(indexOfLetterToRespond) {
+        if (playerStatus.questionsLeft.length === 0) {
+            // end game when answering correctly all questions
+            playerStatus.gameEnded = true;
+            console.log(`${playerStatus.name  } has acertado ${  playerStatus.points  } letras.`);        
+            
+        } else if (indexOfLetterToRespond === playerStatus.questionsLeft.length-1) {
+            // start the questions list again as long as there are unanswered questions
+            playerStatus.letterToRespond = playerStatus.questionsLeft[0].letter;        
+        } else {
+            playerStatus.letterToRespond = playerStatus.questionsLeft[indexOfLetterToRespond+1].letter;
+        }
+    }
+
+    while (playerStatus.questionsLeft.length > 0) {
+        // go to the player's position in the alphabet game
+        let indexOfLetterToRespond = playerStatus.questionsLeft.findIndex(item => item.letter === playerStatus.letterToRespond);
+        const displayQuestion = playerStatus.questionsLeft[indexOfLetterToRespond].question;
+        const correctAnswer = playerStatus.questionsLeft[indexOfLetterToRespond].answer;
+
+        // eslint-disable-next-line no-alert
+        let userAnswer = prompt(`${displayQuestion}. Tu respuesta es: `);
+        userAnswer = userAnswer.toLowerCase(); 
+
+        if (userAnswer === correctAnswer) {
+            playerStatus.questionsLeft[indexOfLetterToRespond].answered = true;
+            playerStatus.points += 1;
+            console.log(`Correcto ${playerStatus.name}. Tienes un puncto.`);
+            // update array of questions left to answer
+            playerStatus.questionsLeft.splice(indexOfLetterToRespond, 1);
+            indexOfLetterToRespond -= 1;
+            goToNextNotAnsweredLetter(indexOfLetterToRespond);
+
+        } else if (userAnswer === 'pasapalabra') {
+            goToNextNotAnsweredLetter(indexOfLetterToRespond);
+            return;
+
+        } else if (userAnswer !== correctAnswer) {
+            playerStatus.incorrectAnswers += 1;
+            goToNextNotAnsweredLetter(indexOfLetterToRespond);
+            return;
+
+        } else if (userAnswer === 'end') {
+            playerStatus.gameEnded = true;    
+            return;
+        }
+
+        gameResults.push( playerStatus);
+        
+    } 
+
+}
 
 // define the game 
-function playGame(playerStatus1, playerStatus2) {
+function playGame() {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         console.log(`Ahora ${playerStatus1.name}.`);
         playTurn(playerStatus1);
@@ -71,64 +130,13 @@ function playGame(playerStatus1, playerStatus2) {
 }
 
 
-playGame(playerStatus1, playerStatus2);
+playGame();
 
 // ranking
 console.log("El ranking es: \n");
 gameResults.sort((a,b) => b.points - a.points); 
-gameResults.forEach(user=>console.log("Name: " + user.name + " points: " + user.points + "\n"))
+gameResults.forEach(user=>console.log(`Name: ${  user.name  } points: ${  user.points  }\n`))
 
-// define each player's turn, which runs until there are no more questions to answer or there is not time left 
-function playTurn(playerStatus) {
-    while (playerStatus.questionsLeft.length > 0) {
-        // go to the player's position in the alphabet game
-        let indexOfLetterToRespond = playerStatus.questionsLeft.findIndex(item => item.letter === playerStatus.letterToRespond);
-        let displayQuestion = playerStatus.questionsLeft[indexOfLetterToRespond].question;
-        let correctAnswer = playerStatus.questionsLeft[indexOfLetterToRespond].answer;
 
-        let userAnswer = prompt(`${displayQuestion}. Tu respuesta es: `);
-        userAnswer = userAnswer.toLowerCase(); 
 
-        if (userAnswer === correctAnswer) {
-            playerStatus.questionsLeft[indexOfLetterToRespond].answered = true;
-            playerStatus.points += 1;
-            console.log(`Correcto ${playerStatus.name}. Tienes un puncto.`);
-            // update array of questions left to answer
-            playerStatus.questionsLeft.splice(indexOfLetterToRespond, 1);
-            indexOfLetterToRespond = indexOfLetterToRespond - 1;
-            goToNextNotAnsweredLetter();
-
-        } else if (userAnswer === 'pasapalabra') {
-            goToNextNotAnsweredLetter();
-            return;
-
-        } else if (userAnswer !== correctAnswer) {
-            playerStatus.incorrectAnswers += 1;
-            goToNextNotAnsweredLetter();
-            return;
-
-        } else if (userAnswer === 'end') {
-            playerStatus.gameEnded = true;    
-            return;
-        }
-
-        function goToNextNotAnsweredLetter() {
-            if (playerStatus.questionsLeft.length === 0) {
-                // end game when answering correctly all questions
-                playerStatus.gameEnded = true;
-                console.log(playerStatus.name + ' has acertado ' + playerStatus.points + ' letras.');        
-                return;
-            } else if (indexOfLetterToRespond === playerStatus.questionsLeft.length-1) {
-                // start the questions list again as long as there are unanswered questions
-                playerStatus.letterToRespond = playerStatus.questionsLeft[0].letter;        
-            } else {
-                playerStatus.letterToRespond = playerStatus.questionsLeft[indexOfLetterToRespond+1].letter;
-            }
-        }
-
-        gameResults.push( playerStatus);
-        
-    } 
-
-}
 
